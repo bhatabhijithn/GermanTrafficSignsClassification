@@ -13,8 +13,8 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./observation.jpg "Histogram of classes and number of observation"
-[image2]: ./examples/grayscale.jpg "Grayscaling"
+[image1]: ./observation.png "Histogram of classes and number of observation"
+[image2]: ./gray.png "Grayscaling"
 [image3]: ./examples/random_noise.jpg "Random Noise"
 [image4]: ./1.jpg "Traffic Sign 1"
 [image5]: ./2.jpg "Traffic Sign 2"
@@ -48,21 +48,43 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 
 ####1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
 
-As a first step, I decided to convert the images to grayscale because ...
+As a first step, I experimented with different preprocessing technique. Opencv knowledge is very important and i had to learn from scratch on how to use it for understand the nitty gritties of it. 
+1. First convert the images to grayscale cv2.COLOR_BGR2GRAY
+2. Then use cv2.equalizeHist(img) for making sure the image brightness and contrast is taken care
+3. Then Normalise it
+4. Add bias of .02 which improved prediction accuracy.
 
 Here is an example of a traffic sign image before and after grayscaling.
 
-![alt text][image2]
+I decided to generate additional data because as i trained existing data, it was peaking at 81%. Then started looking at adding more data. I used simple rotate image to fill in data. The minimum pictures for a set is 809 is generated
 
-As a last step, I normalized the image data because ...
+To add more data to the the data set, I used the following techniques as This will help in not overfitting the samples which have higher samples
 
-I decided to generate additional data because ... 
+#Angles used to rotate the images
+angles = [-10, 10, -5, 5, -15, 15, -20, 20]
 
-To add more data to the the data set, I used the following techniques because ... 
+#iterate through each class
+for i in range(len(pics_in_class)):
+    #Check if less data than the mean
+    if pics_in_class[i] < int_mean:
+        #Count how much additional data you want
+        new_wanted = int_mean - pics_in_class[i]
+        picture = np.where(y_train==i)
+        more_X = []
+        more_y = []
+        
+        for num in range(new_wanted):
+            more_X.append(ndimage.rotate(X_train[picture][random.randint(0,pics_in_class[i] -1)], random.choice(angles), reshape=False))
+            more_y.append(i)
+            
+        #Append the pictures generated for each class back to original shape
+        X_train = np.append(X_train, np.array(more_X), axis=0)
+        y_train = np.append(y_train, np.array(more_y), axis =0)
+        
 
 Here is an example of an original image and an augmented image:
 
-![alt text][image3]
+![alt text][image2]
 
 The difference between the original data set and the augmented data set is the following ... 
 
