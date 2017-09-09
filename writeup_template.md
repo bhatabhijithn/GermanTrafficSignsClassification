@@ -13,7 +13,7 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./observation.jpg "Visualization"
+[image1]: ./observation.jpg "Histogram of classes and number of observation"
 [image2]: ./examples/grayscale.jpg "Grayscaling"
 [image3]: ./examples/random_noise.jpg "Random Noise"
 [image4]: ./1.jpg "Traffic Sign 1"
