@@ -60,27 +60,28 @@ I decided to generate additional data because as i trained existing data, it was
 
 To add more data to the the data set, I used the following techniques as This will help in not overfitting the samples which have higher samples
 
-#Angles used to rotate the images
-angles = [-10, 10, -5, 5, -15, 15, -20, 20]
+```python
+Angles used to rotate the images
+    angles = [-10, 10, -5, 5, -15, 15, -20, 20]
 
-#iterate through each class
-for i in range(len(pics_in_class)):
-    #Check if less data than the mean
-    if pics_in_class[i] < int_mean:
-        #Count how much additional data you want
-        new_wanted = int_mean - pics_in_class[i]
-        picture = np.where(y_train==i)
-        more_X = []
-        more_y = []
-        
-        for num in range(new_wanted):
-            more_X.append(ndimage.rotate(X_train[picture][random.randint(0,pics_in_class[i] -1)], random.choice(angles), reshape=False))
-            more_y.append(i)
-            
-        #Append the pictures generated for each class back to original shape
-        X_train = np.append(X_train, np.array(more_X), axis=0)
-        y_train = np.append(y_train, np.array(more_y), axis =0)
-        
+    #iterate through each class
+    for i in range(len(pics_in_class)):
+        #Check if less data than the mean
+        if pics_in_class[i] < int_mean:
+            #Count how much additional data you want
+            new_wanted = int_mean - pics_in_class[i]
+            picture = np.where(y_train==i)
+            more_X = []
+            more_y = []
+
+            for num in range(new_wanted):
+                more_X.append(ndimage.rotate(X_train[picture][random.randint(0,pics_in_class[i] -1)], random.choice(angles), reshape=False))
+                more_y.append(i)
+
+            #Append the pictures generated for each class back to original shape
+            X_train = np.append(X_train, np.array(more_X), axis=0)
+            y_train = np.append(y_train, np.array(more_y), axis =0)
+```        
 
 Here is an example of an original image and an augmented image:
 
